@@ -16,8 +16,6 @@ app.use(cors(corsOptions));
 // Ajouter un produit
 app.post('/produits', (req, res) => {
   const { numProduit, design, prix, quantite } = req.body;
-
-  //const insertQuery = `INSERT INTO Produit (numProduit, design, prix, quantite) VALUES (?, ?, ?, ?)`;
   conn.query(`INSERT INTO Produit (numProduit, design, prix, quantite) VALUES (?, ?, ?, ?)`, [numProduit, design, prix, quantite], (err, results) => {
     if (err) {
       console.error('Erreur lors de l\'ajout du produit :', err);
@@ -69,12 +67,9 @@ app.delete('/produits/:numProduit', (req, res) => {
   });
 });
 
+//Pour la recherche
 app.get('/produits', (req, res) => {
   const searchQuery = req.query.query;
-  
-  // Votre logique de recherche ici
-  
-  // Exemple : Effectuer une requête SQL pour rechercher des produits par nomProduit
   const selectQuery = `SELECT * FROM Produit WHERE nomProduit LIKE '%${searchQuery}%' OR design LIKE '%${searchQuery}%' or prix LIKE '%${searchQuery}%'`;
   conn.query(selectQuery, (err, results) => {
     if (err) {
